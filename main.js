@@ -11,9 +11,7 @@ var BrowserWindow = electron.BrowserWindow;
  * Twitter
  */
 var twitterAPI = require('twitter');
-
 var client;
-var params = { 'count': '10' };
 
 const twitterTokenAPI = require('node-twitter-api');
 const twitter = new twitterTokenAPI({
@@ -22,8 +20,6 @@ const twitter = new twitterTokenAPI({
     callback: 'https://www.google.co.jp/',
 });
 
-var twitter_accessToken;
-var twitter_accessTokenSecret;
 var twitter_accessToken;
 var twitter_accessTokenSecret;
 
@@ -58,6 +54,7 @@ app.on('ready', function() {
         mainWindow.webContents.send('message', message);
     })
 
+    // サブウィンドウ ログイン画面
     const subWindow = new BrowserWindow({
         width: 800,
         height: 600,
@@ -72,6 +69,7 @@ app.on('ready', function() {
             subWindow.webContents.on('will-navigate', function(event, url) {
                 var matched;
                 if (matched = url.match(/\?oauth_token=([^&]*)&oauth_verifier=([^&]*)/)) {
+                    console.log(matched);
                     twitter.getAccessToken(requestToken, requestTokenSecret, matched[2], function(error, accessToken, accessTokenSecret, results) {
                         client = new twitterAPI({
                             consumer_key: 'T0Lc4YbGmR7E074sjOIqZrjnk',
@@ -84,7 +82,6 @@ app.on('ready', function() {
                             stream.on('data', function(tweet) {
                                 mainWindow.webContents.send('message', tweet.user.name + " : " + tweet.text);
                             })
-
                             stream.on('error', function(e) {
                                 console.log(e)
                             })

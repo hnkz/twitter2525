@@ -5,5 +5,5 @@ function sendMessage() {
     var message = textField.value;
 
     var { ipcRenderer } = require('electron');
-    ipcRenderer.send('message', message);
+    ipcRenderer.send('tweet', message);
 }
