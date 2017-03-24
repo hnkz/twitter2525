@@ -1,18 +1,26 @@
 {
-    "name": "test1",
-    "version": "1.0.0",
-    "main": "main.js",
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1"
-    },
-    "keywords": [],
-    "author": "",
-    "license": "ISC",
-    "dependencies": {
-        "electron": "^1.6.2",
-        "node-twitter-api": "^1.8.0",
-        "twitter": "^1.7.0"
-    },
-    "devDependencies": {},
-    "description": ""
+  "name": "test1",
+  "version": "1.0.0",
+  "main": "script/main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "electron": "^1.6.2",
+    "node-twitter-api": "^1.8.0",
+    "twitter": "^1.7.0"
+  },
+  "devDependencies": {},
+  "description": "## インストール方法",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hnkz/twitter2525.git"
+  },
+  "bugs": {
+    "url": "https://github.com/hnkz/twitter2525/issues"
+  },
+  "homepage": "https://github.com/hnkz/twitter2525#readme"
 }

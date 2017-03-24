@@ -8,8 +8,8 @@ nodeがインストールされているのは前提として書いていきま�
 # Electronをインストール
 npm -g intall electron
 # ライブラリ
-npm -g install twitter
-npm -g install node-twitter-api
+npm install twitter --save
+npm install node-twitter-api --save
 # package.json作成
 npm -y init
 # 起動!

@@ -20,14 +20,25 @@ const twitter = new twitterTokenAPI({
     callback: 'https://www.google.co.jp/',
 });
 
+// アクセストークン
 var twitter_accessToken;
 var twitter_accessTokenSecret;
 
+/**
+ * Window
+ */
+var mainWindow;
+var loginWindow;
+var tweetWindow;
+
+/**
+ * アプリ起動
+ */
 app.on('ready', function() {
     var size = electron.screen.getPrimaryDisplay().size;
 
     // メインウィンドウ
-    var mainWindow = new BrowserWindow({
+    mainWindow = new BrowserWindow({
         left: 0,
         top: 0,
         width: size.width,
@@ -40,7 +51,7 @@ app.on('ready', function() {
     mainWindow.setIgnoreMouseEvents(true);
     mainWindow.maximize();
     mainWindow.setAlwaysOnTop(true);
-    mainWindow.loadURL('file://' + __dirname + '/index.html');
+    mainWindow.loadURL('file://' + __dirname + '/../index.html');
 
     mainWindow.on('closed', function() {
         mainWindow = null;
@@ -54,31 +65,47 @@ app.on('ready', function() {
         mainWindow.webContents.send('message', message);
     })
 
-    // サブウィンドウ ログイン画面
-    const subWindow = new BrowserWindow({
+    // ログインウィンドウ
+    loginWindow = new BrowserWindow({
         width: 800,
         height: 600,
         webPreferences: { webSecurity: false }
     });
 
-    twitter.getRequestToken(function(error, requestToken, requestTokenSecret, results) {
+    twitterProcess();
+});
+
+app.on('window-all-closed', function() {
+    if (process.platform != 'darwin') {
+        app.quit();
+    }
+});
+
+/*
+ * Twitter process
+ * getting a request token
+ */
+function twitterProcess() {
+    twitter.getRequestToken((error, requestToken, requestTokenSecret, results) => {
         if (error) {
             console.log(error);
         } else {
             var url = twitter.getAuthUrl(requestToken);
-            subWindow.webContents.on('will-navigate', function(event, url) {
+            loginWindow.webContents.on('will-navigate', (event, url) => {
                 var matched;
                 if (matched = url.match(/\?oauth_token=([^&]*)&oauth_verifier=([^&]*)/)) {
-                    console.log(matched);
-                    twitter.getAccessToken(requestToken, requestTokenSecret, matched[2], function(error, accessToken, accessTokenSecret, results) {
+
+                    // getting an access token
+                    twitter.getAccessToken(requestToken, requestTokenSecret, matched[2], (error, accessToken, accessTokenSecret, results) => {
+                        // make stream connection
                         client = new twitterAPI({
                             consumer_key: 'T0Lc4YbGmR7E074sjOIqZrjnk',
                             consumer_secret: 'PZ2h4yToCKWjJ8NnWxpDqjEg9Q81PKEQ4pIvxPKqkDfNEYttfd',
                             access_token_key: accessToken,
                             access_token_secret: accessTokenSecret,
                         });
-
-                        var stream = client.stream('user', function(stream) {
+                        // start stream
+                        var streams = client.stream('user', (stream) => {
                             stream.on('data', function(tweet) {
                                 mainWindow.webContents.send('message', tweet.user.name + " : " + tweet.text);
                             })
@@ -88,16 +115,11 @@ app.on('ready', function() {
                         });
                     });
                 }
+                // window close
                 event.preventDefault();
+                loginWindow.close();
             });
-            subWindow.loadURL(url);
+            loginWindow.loadURL(url);
         }
     });
-
-});
-
-app.on('window-all-closed', function() {
-    if (process.platform != 'darwin') {
-        app.quit();
-    }
-});
+}

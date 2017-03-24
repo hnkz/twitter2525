@@ -1,10 +1,12 @@
 'use strict';
 
+// メインプロセスからのメッセージを受信
 const ipcRenderer = require('electron').ipcRenderer;
 ipcRenderer.on('message', function(event, message) {
     startCommentScroll(message);
 });
 
+// コメントを生成
 function startCommentScroll(str) {
     // 位置設定
     const windowHeight = window.parent.screen.height;
@@ -27,15 +29,18 @@ function startCommentScroll(str) {
     autoScroll(x, strLength, element);
 }
 
+// コメントをスクロール
 function autoScroll(x, strLength, elm) {
     elm.style.left = x + "px";
-    var v = strLength * 0.5;
-    if (v > 20)
-        v = 20;
+    var v = strLength * 0.7;
+    if (v > 25)
+        v = 25;
+    else if (v < 10)
+        v = 10;
     x -= v;
-    if (x > -strLength * 70) {
+    if (x > -strLength * 50) {
         setTimeout(function() {
             autoScroll(x, strLength, elm);
-        }, 50);
+        }, 70);
     }
 }
