@@ -7,6 +7,7 @@ nodeがインストールされているのは前提として書いていきま�
 ```
 # Electronをインストール
 npm -g intall electron
+npm install electron --save
 # ライブラリ
 npm install twitter --save
 npm install node-twitter-api --save
