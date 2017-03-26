@@ -4,7 +4,7 @@
 
 nodeがインストールされているのは前提として書いていきます。
 
-```
+```bash
 # Electronをインストール
 npm -g intall electron
 npm install electron --save
