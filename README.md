@@ -7,12 +7,15 @@ nodeがインストールされているのは前提として書いていきま�
 ```bash
 # Electronをインストール
 npm -g intall electron
-npm install electron --save
 # ライブラリ
-npm install twitter --save
-npm install node-twitter-api --save
+npm install twitter
+npm install node-twitter-api
 # package.json作成
 npm -y init
 # 起動!
 electron ./
+# パッケージ化(Mac)
+electron-packager ./ twitter_2525 --platform=darwin --arch=x64 --version=1.6.2(electron -v の値)
+# パッケージ化(Windows)
+electron-packager ./ twitter_2525 --platform=win32 --arch=x64 --version=1.6.2(electron -v の値)
 ```
