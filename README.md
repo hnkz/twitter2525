@@ -5,6 +5,7 @@
 nodeがインストールされているのは前提として書いていきます。
 
 ```bash
+cd twitter2525
 # Electronをインストール
 npm -g intall electron
 # ライブラリ
