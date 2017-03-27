@@ -14,8 +14,8 @@ npm install node-twitter-api
 npm -y init
 # 起動!
 electron ./
-# パッケージ化(Mac)
+# パッケージ化したい人(Mac)
 electron-packager ./ twitter_2525 --platform=darwin --arch=x64 --version=1.6.2(electron -v の値)
-# パッケージ化(Windows)
+# パッケージ化したい人(Windows)
 electron-packager ./ twitter_2525 --platform=win32 --arch=x64 --version=1.6.2(electron -v の値)
 ```

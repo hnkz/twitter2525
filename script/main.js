@@ -10,8 +10,8 @@ var BrowserWindow = electron.BrowserWindow;
 /**
  * Twitter
  */
-var twitterAPI = require('twitter');
-var client;
+const twitterAPI = require('twitter');
+let client;
 
 const twitterTokenAPI = require('node-twitter-api');
 const twitter = new twitterTokenAPI({
@@ -27,9 +27,9 @@ var twitter_accessTokenSecret;
 /**
  * Window
  */
-var mainWindow;
-var loginWindow;
-var tweetWindow;
+let mainWindow;
+let loginWindow;
+let tweetWindow;
 
 /**
  * アプリ起動
@@ -56,14 +56,8 @@ app.on('ready', function() {
     mainWindow.on('closed', function() {
         mainWindow = null;
     });
-
     // ロード終了時
     mainWindow.webContents.on('did-finish-load', function() {});
-
-    const { ipcMain } = require('electron');
-    ipcMain.on('message', (event, message) => {
-        mainWindow.webContents.send('message', message);
-    })
 
     // ログインウィンドウ
     loginWindow = new BrowserWindow({
@@ -113,6 +107,28 @@ function twitterProcess() {
                                 console.log(e)
                             })
                         });
+
+                        // ツイートウィンドウ作成
+                        tweetWindow = new BrowserWindow({
+                            width: 400,
+                            height: 230,
+                            frame: false,
+                            show: true,
+                            resizable: false,
+                        });
+                        tweetWindow.loadURL('file://' + __dirname + '/../tweet.html');
+
+                        // ツイートウィンドウからのツイート
+                        const { ipcMain } = require('electron');
+                        ipcMain.on('tweet', (event, message) => {
+                            // mainWindow.webContents.send('message', message);
+                            client.post('statuses/update', { status: message })
+                                .then(function(tweet) {})
+                                .catch(function(error) {
+                                    throw error;
+                                })
+                        })
+
                     });
                 }
                 // window close

@@ -1,10 +1,16 @@
 'use strict';
 
-var Comment = require('my-module/Comment.js');
-var comment = new Comment();
+/**
+ * モジュールのインポート
+ */
+const Comment = require('my-module/Comment.js');
+const Electron = require('electron');
+const ipcRenderer = Electron.ipcRenderer;
 
-// メインプロセスからのメッセージを受信
-const ipcRenderer = require('electron').ipcRenderer;
+// コメントクラスのインスタンス化
+let comment = new Comment();
+
+// メインプロセスからのコメント新規作成
 ipcRenderer.on('message', function(event, message) {
     comment.startCommentScroll(message);
 });
