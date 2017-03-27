@@ -17,6 +17,13 @@ window.onload = function() {
     // カウンター
     let counter = document.getElementById("counter");
 
+    // キーイベント
+    document.onkeydown = pressKey;
+    document.onkeyup = releaseKey;
+
+    let command = false;
+    let enter = false;
+
     /**
      * ツイートボタンのクリックイベント
      */
@@ -82,6 +89,39 @@ window.onload = function() {
 
         if (textLength !== 0 && textLength < 140) {
             sendTweetButton.style.backgroundColor = "#5ae";
+        }
+    }
+
+    /**
+     * キープレスイベント
+     */
+    function pressKey(e) {
+        if (e.keyCode === 91) {
+            command = true;
+        } else if (e.keyCode === 13) {
+            enter = true;
+        }
+
+        checkShortcutFunc();
+    }
+
+    /**
+     * キーリリースイベント
+     */
+    function releaseKey(e) {
+        if (e.keyCode == 91) {
+            command = false;
+        } else if (e.keyCode == 13) {
+            enter = false;
+        }
+    }
+
+    /**
+     * ショートカット機能が機能するかチェック
+     */
+    function checkShortcutFunc() {
+        if (command && enter) {
+            sendTweetMessage();
         }
     }
 
